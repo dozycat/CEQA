@@ -1,35 +1,104 @@
 <html ng-app>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link rel="stylesheet"
-	href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="http://code.angularjs.org/angular-1.0.1.min.js"></script>
-<link rel="stylesheet" type="text/css" href="./css/CEQA.css">
-</head>
-<body>
-	<div class="site-header">
-		<div class="site-nav">
-			<a href="http://dozy.me" target="_blank">博客</a> <span>/</span> <a
-				href="#about">关于</a>
-		</div>
-		<div class="container">
-		<div class="row">
-		<div class="col-xs-12">
-		<h2>CEQA</h2>
-		<h3>中文知识图谱 (Knowledge Graph) 自动问答<i class="icon-search"></i></h3>
 
-		<form class="" role="search">
-			<div class="form-group">
-				<input type="text" class="form-control search clearable"
-					placeholder="电商领域知识问答，例如：iphone5s尺寸是多少?">
-			</div>
-		</form>
-		</div>
-		</div>
-		</div>
-	</div>
+<head>
+    <!-- 
+Thanks to:
+angular-用于前后端mvc开发
+bootstrap-用于前端响应式排版
+echarts-用于画图，优化用户体验
+ -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="http://code.angularjs.org/angular-1.0.1.min.js"></script>
+    <!-- echarts单文件引入 -->
+    <script src="./js/echarts.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/CEQA.css">
+</head>
+
+<body>
+    <div class="site-header">
+        <div class="site-nav">
+            <a href="http://dozy.me" target="_blank">博客</a> <span>/</span> <a href="#about">关于</a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2>CEQA</h2>
+                    <h3>中文知识图谱 (Knowledge Graph) 自动问答<i class="icon-search"></i></h3>
+                    <form class="" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control search clearable" placeholder="电商领域知识问答，例如：iphone5s尺寸是多少?">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="draw" style="height:400px;">
+    </div>
 </body>
+<script type="text/javascript">
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById('draw'));
+
+myChart.showLoading();
+$.get('./les-miserables.gexf', function(xml) {
+    myChart.hideLoading();
+
+    var graph = echarts.tools.parse(xml);
+    var categories = [];
+    for (var i = 0; i < 9; i++) {
+        categories[i] = {
+            name: '类目' + i
+        };
+    }
+    graph.nodes.forEach(function(node) {
+        node.itemStyle = null;
+        node.value = node.symbolSize;
+        node.label.normal.show = node.symbolSize > 30;
+        node.category = node.attributes.modularity_class;
+    });
+    option = {
+        title: {
+            text: 'Les Miserables',
+            subtext: 'Default layout',
+            top: 'bottom',
+            left: 'right'
+        },
+        tooltip: {},
+        legend: [{
+            // selectedMode: 'single',
+            data: categories.map(function(a) {
+                return a.name;
+            })
+        }],
+        animationDuration: 1500,
+        animationEasingUpdate: 'quinticInOut',
+        series: [{
+            name: 'Les Miserables',
+            type: 'graph',
+            layout: 'none',
+            data: graph.nodes,
+            links: graph.links,
+            categories: categories,
+            roam: true,
+            label: {
+                normal: {
+                    position: 'right'
+                }
+            },
+            lineStyle: {
+                normal: {
+                    curveness: 0.3
+                }
+            }
+        }]
+    };
+
+    myChart.setOption(option);
+}, 'xml');
+</script>
 
 </html>
