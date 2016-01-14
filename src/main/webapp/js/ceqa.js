@@ -7,24 +7,19 @@ $(function(){
         myChart.hideLoading();
 
         var graph = echarts.tools.parse(xml);
-        var categories = [];
-        for (var i = 0; i < 9; i++) {
-            categories[i] = {
-                name: '类目' + i
-            };
-        }
+        var categories = [{name:'实体'},{name:'属性'},{name:'类别'}];
         graph.nodes.forEach(function(node) {
             node.itemStyle = null;
             node.value = node.symbolSize;
-            node.label.normal.show = node.symbolSize > 30;
+            node.label.normal.show = node.symbolSize > 10;
             node.category = node.attributes.modularity_class;
         });
         option = {
             title: {
-                text: 'Les Miserables',
-                subtext: 'Default layout',
+                text: '',
+                subtext: '知识图谱',
                 top: 'bottom',
-                left: 'right'
+                left: 'middle'
             },
             tooltip: {},
             legend: [{
@@ -36,16 +31,17 @@ $(function(){
             animationDuration: 1500,
             animationEasingUpdate: 'quinticInOut',
             series: [{
-                name: 'Les Miserables',
+                name: '知识图谱',
                 type: 'graph',
-                layout: 'none',
+                layout: 'circular',
+                roam:true,
                 data: graph.nodes,
                 links: graph.links,
                 categories: categories,
                 roam: true,
                 label: {
                     normal: {
-                        position: 'right'
+                        position: 'left'
                     }
                 },
                 lineStyle: {

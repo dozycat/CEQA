@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" version="1.2" xmlns:viz="http://www.gexf.net/1.2draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd">
+  <meta lastmodifieddate="2014-01-30">
+    <creator>Gephi 0.8.1</creator>
+    <description></description>
+  </meta>
+  <graph defaultedgetype="undirected" mode="static">
+    <attributes class="node" mode="static">
+      <attribute id="modularity_class" title="Modularity Class" type="integer"></attribute>
+    </attributes>
+    <nodes>
+      <node id="0" label="手机">
+        <attvalues>
+          <attvalue for="modularity_class" value="2"></attvalue>
+        </attvalues>
+        <viz:size value="30.685715"></viz:size>
+        <viz:position x="-266.82776" y="299.6904" z="0.0"></viz:position>
+        <viz:color r="235" g="81" b="72"></viz:color>
+      </node>
+      <node id="1" label="康佳JL78">
+        <attvalues>
+          <attvalue for="modularity_class" value="0"></attvalue>
+        </attvalues>
+        <viz:size value="15.0"></viz:size>
+        <viz:position x="-418.08344" y="446.8853" z="0.0"></viz:position>
+        <viz:color r="236" g="81" b="72"></viz:color>
+      </node>
+      <node id="2" label="2.6英寸">
+        <attvalues>
+          <attvalue for="modularity_class" value="1"></attvalue>
+        </attvalues>
+        <viz:size value="9.485714"></viz:size>
+        <viz:position x="-212.76357" y="245.29176" z="0.0"></viz:position>
+        <viz:color r="236" g="81" b="72"></viz:color>
+      </node>
+        <node id="3" label="2008年">
+        <attvalues>
+          <attvalue for="modularity_class" value="1"></attvalue>
+        </attvalues>
+        <viz:size value="9.485714"></viz:size>
+        <viz:position x="-242.82404" y="235.26283" z="0.0"></viz:position>
+        <viz:color r="236" g="81" b="72"></viz:color>
+      </node>
+      <node id="4" label="GSM">
+        <attvalues>
+          <attvalue for="modularity_class" value="1"></attvalue>
+        </attvalues>
+        <viz:size value="4.0"></viz:size>
+        <viz:position x="-379.30386" y="429.06424" z="0.0"></viz:position>
+        <viz:color r="236" g="81" b="72"></viz:color>
+      </node>
+      <node id="5" label="直板">
+        <attvalues>
+          <attvalue for="modularity_class" value="1"></attvalue>
+        </attvalues>
+        <viz:size value="4.0"></viz:size>
+        <viz:position x="-417.26337" y="406.03506" z="0.0"></viz:position>
+        <viz:color r="236" g="81" b="72"></viz:color>
+      </node>
+    </nodes>
+    <edges>
+      <edge id="0" source="1" target="0" label="属于"></edge>
+      <edge id="1" source="1" target="2">
+        <attvalues></attvalues>
+      </edge>
+      <edge id="2" source="1" target="3">
+        <attvalues></attvalues>
+      </edge>
+      <edge id="3" source="1" target="4">
+        <attvalues></attvalues>
+      </edge>
+      <edge id="3" source="1" target="5">
+        <attvalues></attvalues>
+      </edge>
+    </edges>
+  </graph>
+</gexf>
