@@ -60,16 +60,16 @@
     </nodes>
     <edges>
       <edge id="0" source="1" target="0" label="属于"></edge>
-      <edge id="1" source="1" target="2">
+      <edge id="1" source="1" target="2"  label="尺寸">
         <attvalues></attvalues>
       </edge>
-      <edge id="2" source="1" target="3">
+      <edge id="2" source="1" target="3" label="上市年月份">
         <attvalues></attvalues>
       </edge>
-      <edge id="3" source="1" target="4">
+      <edge id="3" source="1" target="4" label="网络类型">
         <attvalues></attvalues>
       </edge>
-      <edge id="3" source="1" target="5">
+      <edge id="3" source="1" target="5" label="款式">
         <attvalues></attvalues>
       </edge>
     </edges>

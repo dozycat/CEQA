@@ -1,5 +1,5 @@
 // 基于准备好的dom，初始化echarts实例
-$(function(){
+$(function() {
     var myChart = echarts.init(document.getElementById('draw'));
 
     myChart.showLoading();
@@ -7,21 +7,35 @@ $(function(){
         myChart.hideLoading();
 
         var graph = echarts.tools.parse(xml);
-        var categories = [{name:'实体'},{name:'属性'},{name:'类别'}];
+        var categories = [{
+            name: '实体'
+        }, {
+            name: '属性'
+        }, {
+            name: '类别'
+        }];
         graph.nodes.forEach(function(node) {
             node.itemStyle = null;
             node.value = node.symbolSize;
-            node.label.normal.show = node.symbolSize > 10;
+            node.label.normal.show = node.symbolSize > 5;
             node.category = node.attributes.modularity_class;
         });
         option = {
             title: {
                 text: '',
-                subtext: '知识图谱',
+                subtext: 'http://dozy.me',
                 top: 'bottom',
                 left: 'middle'
             },
-            tooltip: {},
+            tooltip: {
+                formatter: function(param) {
+                    if (param.data.value > 0) {
+                        return param.name;
+                    } else {
+                        return param.data.name;
+                    }
+                }
+            },
             legend: [{
                 // selectedMode: 'single',
                 data: categories.map(function(a) {
@@ -34,7 +48,7 @@ $(function(){
                 name: '知识图谱',
                 type: 'graph',
                 layout: 'circular',
-                roam:true,
+                roam: true,
                 data: graph.nodes,
                 links: graph.links,
                 categories: categories,
