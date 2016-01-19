@@ -5,10 +5,12 @@
     color: #fff;
     margin-bottom: 0;
 }
+
 .site-header .form-group {
     position: relative;
     margin-top: 40px;
 }
+
 .site-header .search {
     border: 2px solid #27AE60;
     -webkit-box-shadow: none;
@@ -19,6 +21,7 @@
     height: auto;
     text-align: center;
 }
+
 .site-header .fa {
     position: absolute;
     right: 25px;
@@ -26,11 +29,22 @@
     color: #eee;
     font-size: 24px;
 }
+
 .site-header h2 {margin-top: 50px}
 
 body {margin-top: 0px}
 
-body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft YaHei,'微软雅黑' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;}
+body,
+button, 
+input, 
+select, 
+textarea,
+h1 ,
+h2, 
+h3, 
+h4, 
+h5, 
+h6 { font-family: Microsoft YaHei,'微软雅黑' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;}
 
 .site-nav {
     position: absolute;
