@@ -17,8 +17,9 @@ public class LTPPaser implements Parser {
 	private final static String BASE_URL = "http://ltpapi.voicecloud.cn/analysis/";
 
 	@Override
-	public String ParseSetence(String s) {
-		return HttpRequest.sendGet(BASE_URL, "api_key=" + LTP_KEY + "&text=" + s + "&pattern=pos&format=plain");
+	public String[] ParseSetence(String s) {
+		return HttpRequest.sendGet(BASE_URL, "api_key=" + LTP_KEY + "&text=" + s + "&pattern=pos&format=plain")
+				.split(" ");
 	}
 
 	/**

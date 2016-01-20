@@ -14,6 +14,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.log4j.Logger;
 
+import com.ica.stc.algorithm.linking.impl.SimpleLinkImpl;
 import com.ica.stc.algorithm.parse.impl.LTPPaser;
 import com.ica.stc.algorithm.qtype.impl.SimpleQtype;
 
@@ -41,7 +42,8 @@ public class Main {
 		// String[] words = sys.getWordSeg().getWords(question); TODO;
 
 		String[] words = parse.getWords(question);
-
+		String[] segs = parse.ParseSetence(question);
+		
 		StringBuilder message = new StringBuilder();
 		for (String word : words) {
 			message.append(word + "\t");
@@ -65,6 +67,8 @@ public class Main {
 		// -------------------- Link URL --------------------------
 		LOG.info(("获取链接关系中...."));
 		LOG.info(("获取链接关系结束,结果如下...."));
+		SimpleLinkImpl simpleLink = new SimpleLinkImpl();
+		String[] linked = simpleLink.getUrl(words, segs);
 		for (int i = 0; i < linked.length; i++) {
 			if (linked[i] != null) {
 				LOG.info(words[i] + "---->" + linked[i]);
