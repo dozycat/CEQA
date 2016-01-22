@@ -43,7 +43,7 @@ public class Main {
 
 		String[] words = parse.getWords(question);
 		String[] segs = parse.ParseSetence(question);
-		
+
 		StringBuilder message = new StringBuilder();
 		for (String word : words) {
 			message.append(word + "\t");
