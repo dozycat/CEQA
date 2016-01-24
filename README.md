@@ -22,8 +22,8 @@ Experimental results showed that the system has a high accuracy and practical va
 --------------
 
 
-Front End: anjs,bootstrap,e-charts</br>
-service: springmvc,jena</br>
+Front End: <b>anjs,bootstrap,e-charts</b></br>
+service: <b>springmvc,jena</b></br>
 data: tmall.com's spu data(phone :103137 triples,computer:508123 triples)
 
 
