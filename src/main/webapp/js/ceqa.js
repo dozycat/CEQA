@@ -4,82 +4,28 @@ $(function() {
 	var q = $("#qq");
 	var myChart = echarts.init(document.getElementById('draw'));
 
-	q.keydown(function(event) {
-		$.get("./hello.io", function(json) {
-			var graph = json;
-			var categories = [ {
-				name : '实体'
-			}, {
-				name : '属性'
-			}, {
-				name : '类别'
-			} ];
-			option = {
-				title : {
-					text : '',
-					subtext : 'http://dozy.me',
-					top : 'bottom',
-					left : 'middle'
-				},
-				tooltip : {
-					formatter : function(param) {
-						if (param.data.value > 0) {
-							return param.name;
-						} else {
-							return param.data.name;
-						}
-					}
-				},
-				legend : [ {
-					// selectedMode: 'single',
-					data : categories.map(function(a) {
-						return a.name;
-					})
-				} ],
-				animationDuration : 1500,
-				animationEasingUpdate : 'quinticInOut',
-				series : [ {
-					name : '知识图谱',
-					type : 'graph',
-					layout : 'circular',
-					roam : true,
-					data : graph.nodes,
-					links : graph.links,
-					categories : categories,
-					roam : true,
-					label : {
-						normal : {
-							position : 'left'
-						}
-					},
-					lineStyle : {
-						normal : {
-							curveness : 0.3
-						}
-					}
-				} ]
-			};
-			myChart.setOption(option );
-		}, "json");
-	});
-
-	myChart.showLoading();
-	$.get('./les-miserables.gexf', function(xml) {
-		myChart.hideLoading();
-
-		var graph = echarts.tools.parse(xml);
+	var drawfunc = function(json) {
+		// myChart.showLoading();
+		if ((json == null) || (json == "")) {
+			return;
+		}
+		var graph = $.parseJSON(json);
 		var categories = [ {
+			name : '类别'
+		}, {
 			name : '实体'
 		}, {
 			name : '属性'
-		}, {
-			name : '类别'
 		} ];
 		graph.nodes.forEach(function(node) {
 			node.itemStyle = null;
 			node.value = node.symbolSize;
-			node.label.normal.show = node.symbolSize > 5;
-			node.category = node.attributes.modularity_class;
+			node.category = node.modularityClass;
+			node.label = {
+				normal : {
+					show : true
+				}
+			};
 		});
 		option = {
 			title : {
@@ -116,7 +62,10 @@ $(function() {
 				roam : true,
 				label : {
 					normal : {
-						position : 'left'
+						position : 'left',
+						formatter : function(param) {
+							return param.data.name
+						}
 					}
 				},
 				lineStyle : {
@@ -126,7 +75,32 @@ $(function() {
 				}
 			} ]
 		};
-
+		myChart.hideLoading();
 		myChart.setOption(option);
-	}, 'xml');
+	};
+	q.keydown(function(event) {
+
+		$.ajax({
+			type : 'GET',
+			encoding : "UTF-8",
+			dataType : "json",
+			contentType : "application/json; charset=UTF-8",
+			url : './qa.io',
+			data : {
+				question : $("#qq").val()
+			},
+			success : drawfunc
+		});
+	});
+	$.ajax({
+		type : 'GET',
+		encoding : "UTF-8",
+		dataType : "html",
+		contentType : "application/json; charset=UTF-8",
+		url : './qa.io',
+		data : {
+			question : "first"
+		},
+		success : drawfunc
+	});
 });
