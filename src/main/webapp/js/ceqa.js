@@ -9,7 +9,12 @@ $(function() {
 		if ((json == null) || (json == "")) {
 			return;
 		}
-		var graph = $.parseJSON(json);
+		if (typeof(json) != "object") {
+			var graph = $.parseJSON(json);
+		} else {
+			var graph = json;
+		}
+
 		var categories = [ {
 			name : '类别'
 		}, {
@@ -78,7 +83,7 @@ $(function() {
 		myChart.hideLoading();
 		myChart.setOption(option);
 	};
-	q.keydown(function(event) {
+	q.keyup(function(event) {
 
 		$.ajax({
 			type : 'GET',
@@ -97,7 +102,7 @@ $(function() {
 		encoding : "UTF-8",
 		dataType : "html",
 		contentType : "application/json; charset=UTF-8",
-		url : './qa.io',
+		url : './hello.io',
 		data : {
 			question : "first"
 		},
