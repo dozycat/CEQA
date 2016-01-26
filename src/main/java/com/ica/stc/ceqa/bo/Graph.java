@@ -4,7 +4,7 @@ public class Graph {
 
 	private Node[] nodes;
 	private Edges[] links;
-
+	
 	public Graph(Node[] nodes, Edges[] links) {
 		super();
 		this.nodes = nodes;

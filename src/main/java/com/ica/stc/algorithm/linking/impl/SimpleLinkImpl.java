@@ -36,7 +36,7 @@ public class SimpleLinkImpl implements Link {
 			QuerySolution qs = results.next();
 			String x = qs.get("?x").toString();
 			linkCacheRes.put(x.split("#")[1], x);
-			System.out.println(x.split("#")[1]);
+			//System.out.println(x.split("#")[1]);
 			String y = qs.get("?y").toString();
 			linkCachePro.put(y.split("#")[1], y);
 		}
