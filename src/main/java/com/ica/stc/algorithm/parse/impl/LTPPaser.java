@@ -23,7 +23,8 @@ public class LTPPaser implements Parser {
 	}
 
 	/**
-	 * 獲得分詞後的詞序列
+	 * 获得分词后的序列
+	 * 
 	 * 
 	 * @param s
 	 *            待分词串
@@ -37,7 +38,11 @@ public class LTPPaser implements Parser {
 
 	public static void main(String[] args) {
 		LTPPaser parse = new LTPPaser();
-		System.out.println(parse.ParseSetence("123123 啊是的撒"));
+		String[] argvs = parse.ParseSetence("123123 我爱北京天安门");
+		for (String x: argvs){
+			System.out.println(x);
+		}
+		
 	}
 
 }
