@@ -51,7 +51,7 @@
 
 	<welcome-file-list>
     	<welcome-file>
-      		index.html
+      		about.html
     	</welcome-file>
   	</welcome-file-list>
   	
