@@ -44,10 +44,13 @@ public class SimpleQtype implements QType{
             a[TYPE_FACT] += 1;
         }
         if (isWordInSetence(words, "多少")) {
-            a[TYPE_NUMERIC] += 1;
+        	a[TYPE_FACT] += 1;
             a[TYPE_COUNT] += 1;
         }
         if (isWordInSetence(words, "什么") || isWordInSetence(words, "什么样")) {
+            a[TYPE_FACT] += 1;
+        }
+        if (isWordInSetence(words, "是")) {
             a[TYPE_FACT] += 1;
         }
         int target = -1;

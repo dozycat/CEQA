@@ -25,72 +25,62 @@ import com.ica.stc.ceqa.bo.Graph;
 import com.ica.stc.ceqa.bo.Node;
 
 public class Main {
-	private static LTPPaser parse;
+	private LTPPaser parse = new LTPPaser();
+	private SimpleLinkImpl link = new SimpleLinkImpl();
+	private SimpleQtype sqt = new SimpleQtype();
+
 	private static final Logger LOG = Logger.getLogger(Main.class);
 	private static final String U = "http://spu.ica.sth.sh.cn#";
 	private static final Random random = new Random(System.currentTimeMillis());
-	
-	private SimpleLinkImpl link = new SimpleLinkImpl();
 
-	public static String answerQuestion(String q) {
-		return "test";
+	public SimpleLinkImpl getLink() {
+		return this.link;
+	}
+
+	public SimpleQtype getSimpleQtype() {
+		return this.sqt;
+	}
+
+	public String answerQuestion(String q) {
+		String[] words = parse.getWords(q);
+		int cat = this.sqt.getQuestionType(words);
+		LOG.info("问题类别" + String.valueOf(cat));
+		String[] links = new String[words.length];
+		for (int i = 0; i < words.length; i++) {
+			String[] linked = this.getLink().getCandidates(words[i]);
+			links[i] = null;
+			if (linked.length > 0) {
+				if (!(linked[0] == null)) {
+					LOG.info(words[i] + "---->" + linked[0]);
+					links[i] = "http://spu.ica.sth.sh.cn#" + linked[0];
+				} else {
+					links[i] = null;
+					LOG.info(words[i] + "----> Nothing");
+				}
+			} else {
+				LOG.info(words[i] + "----> Nothing");
+			}
+		}
+		return Main.resolvedQuestion(cat, links, model);
 	}
 
 	public Model model;
 
 	public static void main(String[] args) {
 
-		String segPath = args[0];
-		String DBUrl = args[1];
-		String question = args[2];
-
-		LOG.info("成功加载DB");
-		// -------------------- 词性标注 --------------------------
-		parse = new LTPPaser();
-
-		SimpleQtype sqt = new SimpleQtype();
-		// -------------------- 问题分词 ----------------------------
-		// String[] words = sys.getWordSeg().getWords(question); TODO;
-
-		String[] words = parse.getWords(question);
-		String[] segs = parse.ParseSetence(question);
-
-		StringBuilder message = new StringBuilder();
-		for (String word : words) {
-			message.append(word + "\t");
-		}
-
-		LOG.info(message);
-		// -------------------- 计算问题类别 --------------------------
-		int cat = sqt.getQuestionType(words);
-		LOG.info("问题类别" + String.valueOf(cat));
-		Model model = ModelFactory.createDefaultModel();
-		System.out.println("model ok");
-		// -------------------- 初始化SPARQL --------------------------
-		try {
-			InputStream in = new FileInputStream(new File("d:/data/rdf_phone"));
-			model.read(in, null);
-			in.close();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		String question = "金鹏S8522的摄像头是？";
 
 		// -------------------- Link URL --------------------------
 		// LOG.info(("获取链接关系中...."));
 		// LOG.info(("获取链接关系结束,结果如下...."));
-		// SimpleLinkImpl simpleLink = new SimpleLinkImpl();
-		// String[] linked = simpleLink.getUrl(words, segs);
-		// for (int i = 0; i < linked.length; i++) {
-		// if (linked[i] != null) {
-		// LOG.info(words[i] + "---->" + linked[i]);
-		// }
-		// }
-		// LOG.info(resolvedQuestion(cat, linked, model));
+
+		Main test = new Main();
+		test.initModel("/Users/baidu/workspace/CEQA/src/main/webapp/rdf_phone");
+		System.out.println(test.answerQuestion(question)); 
 	}
 
 	public void initModel(String path) {
 		Model model = ModelFactory.createDefaultModel();
-
 		this.model = model;
 		// -------------------- 初始化SPARQL --------------------------
 		try {
@@ -143,7 +133,7 @@ public class Main {
 				return "Yes." + target[0] + qs.toString() + target[1];
 			}
 
-			return "No.";
+			return "...";
 		}
 		if (qt == SimpleQtype.TYPE_FACT) {
 			String queryString = " SELECT ?x ?y ?z where { ";
@@ -177,21 +167,23 @@ public class Main {
 			results = qe.execSelect();
 			while (results.hasNext()) {
 				QuerySolution qs = results.nextSolution();
-				return qs.toString();
+				return qs.toString().replace("http://spu.ica.sth.sh.cn#", "");
 			}
 
 			return "dont know.";
 		}
 		return null;
 	}
+
 	/**
 	 * 查询单个实体
+	 * 
 	 * @param nl
 	 * @return
 	 */
-	public Graph serchSingelEntity(String nl){
-		EntityLink e =  link.getLink(nl);
-		if (e!=null){
+	public Graph serchSingelEntity(String nl) {
+		EntityLink e = link.getLink(nl);
+		if (e != null) {
 			return this.searchGraph(e.getUrl(), e.getType());
 		}
 		return null;

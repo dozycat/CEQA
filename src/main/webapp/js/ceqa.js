@@ -220,6 +220,21 @@ $(function() {
 			});
 		}
 	});
+	$("#try").click(function(event) {
+		$.ajax({
+			type : 'GET',
+			encoding : "UTF-8",
+			dataType : "json",
+			contentType : "application/json; charset=UTF-8",
+			url : './question.io',
+			data : {
+				question : $("#qq").val()
+			},
+			success : function (value){
+				$("#res").html("<h3 id='res'>" + value + "<h3");
+			}
+		});
+	});
 	$.ajax({
 		type : 'GET',
 		encoding : "UTF-8",

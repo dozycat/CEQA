@@ -33,8 +33,7 @@ public class CeqaServiceImpl implements CeqaService {
 
 	@Override
 	public String getResult(String q) {
-		// TODO Auto-generated method stub
-		return "";
+		return ceqaAlgorithm.answerQuestion(q);
 	}
 
 	/**
@@ -45,7 +44,6 @@ public class CeqaServiceImpl implements CeqaService {
 		System.out.println(config.getRdfpath());
 		ceqaAlgorithm.initModel(config.getRdfpath());
 		String path = config.getRdfpath();
-
 	}
 
 	@Override

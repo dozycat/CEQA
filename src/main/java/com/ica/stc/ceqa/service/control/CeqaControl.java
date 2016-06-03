@@ -30,7 +30,19 @@ public class CeqaControl {
 		System.out.println("Work Well Page!Hello CEQA!");
 		return (ceqaService.getGraph("http://spu.ica.sth.sh.cn#UTStarcom/UT斯达康UT620", "?x"));
 	}
-
+	
+	@ResponseBody
+	@RequestMapping(value = "/question.io", method = RequestMethod.GET)
+	public Object question(Question q){
+		try {
+			String str = new String(q.getQuestion().getBytes("iso8859-1"), "UTF-8");
+			q.setQuestion(str);
+		} catch (UnsupportedEncodingException e) {
+			q.setQuestion(null);
+		}
+		return ceqaService.getResult(q.getQuestion());
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "/qa.io", method = RequestMethod.GET)
 	public Graph qa(Question q) {
