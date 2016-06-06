@@ -186,7 +186,7 @@ $(function() {
 				series : [ {
 					name : '价格',
 					type : 'bar',
-					data : [ 3050, 1018, 964, 1026],
+					data : [ 5050, 1018, 964, 1026],
 					markLine : {
 						itemStyle : {
 							normal : {

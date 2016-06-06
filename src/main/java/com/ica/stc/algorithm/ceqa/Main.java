@@ -68,7 +68,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		String question = "金鹏S8522的摄像头是？";
+		String question = "价格最高的手机是？";
 
 		// -------------------- Link URL --------------------------
 		// LOG.info(("获取链接关系中...."));
@@ -76,7 +76,7 @@ public class Main {
 
 		Main test = new Main();
 		test.initModel("/Users/baidu/workspace/CEQA/src/main/webapp/rdf_phone");
-		System.out.println(test.answerQuestion(question)); 
+		System.out.println(test.answerQuestion(question));
 	}
 
 	public void initModel(String path) {
@@ -169,10 +169,58 @@ public class Main {
 				QuerySolution qs = results.nextSolution();
 				return qs.toString().replace("http://spu.ica.sth.sh.cn#", "");
 			}
-
-			return "dont know.";
+		} else if (qt == SimpleQtype.TYPE_MAX) {
+			String queryString = " SELECT ?x ?y ?z where { ";
+			String[] target = new String[2];
+			int idx = 0;
+			for (int i = 0; i < linkedQ.length; i++) {
+				if (linkedQ[i] != null) {
+					if (idx >= 2) {
+						return "Dont Know";
+					}
+					target[idx] = linkedQ[i];
+					idx++;
+				}
+			}
+			queryString = " SELECT ?x ?y ?z where { ";
+			queryString += " ?x" + "<" + target[0] + ">" + " ?z } ORDER BY DESC(?z) LIMIT 1";
+			LOG.info(queryString);
+			Query query = QueryFactory.create(queryString);
+			QueryExecution qe = QueryExecutionFactory.create(query, model);
+			ResultSet results = qe.execSelect();
+			String res = "";
+			while (results.hasNext()) {
+				QuerySolution qs = results.nextSolution();
+				res+= qs.toString().replace("http://spu.ica.sth.sh.cn#", "") +"\n";
+			}
+			return res;
+		}else if (qt == SimpleQtype.TYPE_MIN) {
+			String queryString = " SELECT ?x ?y ?z where { ";
+			String[] target = new String[2];
+			int idx = 0;
+			for (int i = 0; i < linkedQ.length; i++) {
+				if (linkedQ[i] != null) {
+					if (idx >= 2) {
+						return "Dont Know";
+					}
+					target[idx] = linkedQ[i];
+					idx++;
+				}
+			}
+			queryString = " SELECT ?x ?y ?z where { ";
+			queryString += " ?x" + "<" + target[0] + ">" + " ?z } ORDER BY ASC(?z) LIMIT 1";
+			LOG.info(queryString);
+			Query query = QueryFactory.create(queryString);
+			QueryExecution qe = QueryExecutionFactory.create(query, model);
+			ResultSet results = qe.execSelect();
+			String res = "";
+			while (results.hasNext()) {
+				QuerySolution qs = results.nextSolution();
+				res+= qs.toString().replace("http://spu.ica.sth.sh.cn#", "") +"\n";
+			}
+			return res;
 		}
-		return null;
+		return "^_^";
 	}
 
 	/**

@@ -20,6 +20,7 @@ public class SimpleLinkImpl implements Link {
 
 	private HashMap<String, String> linkCacheRes = new HashMap<String, String>();
 	private HashMap<String, String> linkCachePro = new HashMap<String, String>();
+	// 阈值
 	private static float THREADHOLD = 0.5f;
 
 	@Override

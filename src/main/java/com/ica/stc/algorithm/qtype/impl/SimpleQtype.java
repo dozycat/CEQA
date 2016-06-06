@@ -53,6 +53,12 @@ public class SimpleQtype implements QType{
         if (isWordInSetence(words, "是")) {
             a[TYPE_FACT] += 1;
         }
+        if (isWordInSetence(words, "最高") || isWordInSetence(words, "最大") || isWordInSetence(words, "最贵")) {
+            a[TYPE_MAX] += 2;
+        }
+        if (isWordInSetence(words, "最低") || isWordInSetence(words, "最小") || isWordInSetence(words, "便宜")) {
+            a[TYPE_MIN] += 2;
+        }
         int target = -1;
         int v = 0;
         for (int i = 0; i < a.length; i++) {
