@@ -167,7 +167,7 @@ public class Main {
 			results = qe.execSelect();
 			while (results.hasNext()) {
 				QuerySolution qs = results.nextSolution();
-				return qs.toString().replace("http://spu.ica.sth.sh.cn#", "");
+				return qs.toString().replace("http://spu.ica.sth.sh.cn#", "").replace("<", "").replace(">", "");
 			}
 		} else if (qt == SimpleQtype.TYPE_MAX) {
 			String queryString = " SELECT ?x ?y ?z where { ";
@@ -191,7 +191,7 @@ public class Main {
 			String res = "";
 			while (results.hasNext()) {
 				QuerySolution qs = results.nextSolution();
-				res+= qs.toString().replace("http://spu.ica.sth.sh.cn#", "") +"\n";
+				res+= qs.toString().replace("http://spu.ica.sth.sh.cn#", "").replace("<", "").replace(">", "") +"\n";
 			}
 			return res;
 		}else if (qt == SimpleQtype.TYPE_MIN) {
@@ -216,7 +216,7 @@ public class Main {
 			String res = "";
 			while (results.hasNext()) {
 				QuerySolution qs = results.nextSolution();
-				res+= qs.toString().replace("http://spu.ica.sth.sh.cn#", "") +"\n";
+				res+= qs.toString().replace("http://spu.ica.sth.sh.cn#", "").replace("<", "").replace(">", "") +"\n";
 			}
 			return res;
 		} else if (qt == SimpleQtype.TYPE_LIST) {
@@ -241,7 +241,7 @@ public class Main {
 			String res = "";
 			while (results.hasNext()) {
 				QuerySolution qs = results.nextSolution();
-				res+= qs.toString().replace("http://spu.ica.sth.sh.cn#", "") +"\n";
+				res+= qs.toString().replace("http://spu.ica.sth.sh.cn#", "").replace("<", "").replace(">", "") +"\n";
 			}
 			return res;
 		}
