@@ -219,6 +219,31 @@ public class Main {
 				res+= qs.toString().replace("http://spu.ica.sth.sh.cn#", "") +"\n";
 			}
 			return res;
+		} else if (qt == SimpleQtype.TYPE_LIST) {
+			String queryString = "";
+			String[] target = new String[2];
+			int idx = 0;
+			for (int i = 0; i < linkedQ.length; i++) {
+				if (linkedQ[i] != null) {
+					if (idx >= 2) {
+						return "Dont Know";
+					}
+					target[idx] = linkedQ[i];
+					idx++;
+				}
+			}
+			queryString = " SELECT ?x ?y ?z where { ";
+			queryString += " ?x ?y " + "<" + target[0] + ">" + "  }  LIMIT 10";
+			LOG.info(queryString);
+			Query query = QueryFactory.create(queryString);
+			QueryExecution qe = QueryExecutionFactory.create(query, model);
+			ResultSet results = qe.execSelect();
+			String res = "";
+			while (results.hasNext()) {
+				QuerySolution qs = results.nextSolution();
+				res+= qs.toString().replace("http://spu.ica.sth.sh.cn#", "") +"\n";
+			}
+			return res;
 		}
 		return "^_^";
 	}

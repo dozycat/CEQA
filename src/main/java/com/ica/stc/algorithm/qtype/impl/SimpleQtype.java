@@ -36,7 +36,7 @@ public class SimpleQtype implements QType{
         if ((isWordInSetence(words, "可以")) && (isWordInSetence(words, "吗"))) {
             a[TYPE_BOOL] += 1;
         }
-        if (isWordInSetence(words, "那些")) {
+        if (isWordInSetence(words, "哪些")) {
             a[TYPE_LIST] += 1;
         }
         if (isWordInSetence(words, "多大")) {

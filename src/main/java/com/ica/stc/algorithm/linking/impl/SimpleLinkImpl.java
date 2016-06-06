@@ -41,6 +41,8 @@ public class SimpleLinkImpl implements Link {
 			// System.out.println(x.split("#")[1]);
 			String y = qs.get("?y").toString();
 			linkCachePro.put(y.split("#")[1], y);
+			y = qs.get("?z").toString();
+			linkCachePro.put(y.split("#")[1], y);
 		}
 
 	}
