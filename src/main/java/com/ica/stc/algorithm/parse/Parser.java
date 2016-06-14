@@ -8,5 +8,7 @@ public interface Parser {
 	 * @return
 	 */
 	public String[] ParseSetence(String seq);
+	
+	public String[] entityReg(String[] seqs);
 
 }

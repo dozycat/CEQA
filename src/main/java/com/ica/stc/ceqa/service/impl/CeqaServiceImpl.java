@@ -58,6 +58,23 @@ public class CeqaServiceImpl implements CeqaService {
 
 	@Override
 	public Graph getEntityGraph(String nl) {
-		return ceqaAlgorithm.serchSingelEntity(nl);
+		Graph temp = ceqaAlgorithm.serchSingelEntity(nl);
+		if (temp == null) {
+			String[] links = ceqaAlgorithm.getLinks(nl);
+			String longKey = "";
+			for (String x: links) {
+				if (x != null) {
+					String key = x.split("#")[1];
+					if (key.length() > longKey.length()) {
+						longKey = key;
+					}
+				}
+			}
+			temp = ceqaAlgorithm.serchSingelEntity(longKey);
+			if ((temp != null)) {
+				return temp;
+			}
+		}
+		return temp;
 	}
 }

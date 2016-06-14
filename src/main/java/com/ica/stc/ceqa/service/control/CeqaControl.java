@@ -51,6 +51,7 @@ public class CeqaControl {
 		 */
 		try {
 			String str = new String(q.getQuestion().getBytes("iso8859-1"), "UTF-8");
+			
 			q.setQuestion(str);
 		} catch (UnsupportedEncodingException e) {
 			q.setQuestion(null);

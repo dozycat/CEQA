@@ -41,8 +41,9 @@ public class Main {
 		return this.sqt;
 	}
 
-	public String answerQuestion(String q) {
+	public String[] getLinks(String q) {
 		String[] words = parse.getWords(q);
+		String[] regS = parse.entityReg(words);
 		int cat = this.sqt.getQuestionType(words);
 		LOG.info("问题类别" + String.valueOf(cat));
 		String[] links = new String[words.length];
@@ -51,17 +52,41 @@ public class Main {
 			links[i] = null;
 			if (linked.length > 0) {
 				if (!(linked[0] == null)) {
-					LOG.info(words[i] + "---->" + linked[0]);
+					LOG.info(words[i] + "---->" + linked[0] + "-->" + regS[i]);
 					links[i] = "http://spu.ica.sth.sh.cn#" + linked[0];
 				} else {
 					links[i] = null;
-					LOG.info(words[i] + "----> Nothing");
+					LOG.info(words[i] + "---->");
 				}
 			} else {
 				LOG.info(words[i] + "----> Nothing");
 			}
 		}
-		return Main.resolvedQuestion(cat, links, model);
+		return links;
+	}
+
+	public String answerQuestion(String q) {
+		String[] words = parse.getWords(q);
+		String[] regS = parse.entityReg(words);
+		int cat = this.sqt.getQuestionType(words);
+		LOG.info("问题类别" + String.valueOf(cat));
+		String[] links = new String[words.length];
+		for (int i = 0; i < words.length; i++) {
+			String[] linked = this.getLink().getCandidates(words[i]);
+			links[i] = null;
+			if (linked.length > 0) {
+				if (!(linked[0] == null)) {
+					LOG.info(words[i] + "---->" + linked[0] + "-->" + regS[i]);
+					links[i] = "http://spu.ica.sth.sh.cn#" + linked[0];
+				} else {
+					links[i] = null;
+					LOG.info(words[i] + "---->");
+				}
+			} else {
+				LOG.info(words[i] + "----> Nothing");
+			}
+		}
+		return Main.resolvedQuestion(words, cat, links, regS, model);
 	}
 
 	public Model model;
@@ -94,7 +119,7 @@ public class Main {
 		System.out.println("model init ok");
 	}
 
-	public static String resolvedQuestion(int qt, String[] linkedQ, Model model) {
+	public static String resolvedQuestion(String[] words, int qt, String[] linkedQ, String[] regS, Model model) {
 		if (qt == SimpleQtype.TYPE_BOOL) {
 			String queryString = " SELECT ?x ?y ?z where { ";
 			String[] target = new String[2];
@@ -137,18 +162,24 @@ public class Main {
 		}
 		if (qt == SimpleQtype.TYPE_FACT) {
 			String queryString = " SELECT ?x ?y ?z where { ";
-			String[] target = new String[2];
+			String[] target = new String[3];
 			int idx = 0;
 			for (int i = 0; i < linkedQ.length; i++) {
 				if (linkedQ[i] != null) {
-					if (idx >= 2) {
-						return "Dont Know";
+					if (idx >= 3) {
+						return Templete.resoveComplexQuestionWithTemples(words, linkedQ, regS, qt);
 					}
 					target[idx] = linkedQ[i];
 					idx++;
 				}
 			}
-			queryString += " " + "<" + target[0] + ">" + " ?y " + "<" + target[1] + "> }";
+			String l = target[0];
+			String r = target[1];
+			if (idx == 3) {
+				l = target[1];
+				r = target[2];
+			}
+			queryString += " " + "<" + l + ">" + " ?y " + "<" + r + "> }";
 
 			LOG.info(queryString);
 			Query query = QueryFactory.create(queryString);
@@ -160,7 +191,7 @@ public class Main {
 				return qs.toString();
 			}
 			queryString = " SELECT ?x ?y ?z where { ";
-			queryString += " " + "<" + target[0] + ">" + " <" + target[1] + "> ?y }";
+			queryString += " " + "<" + l + ">" + " <" + r + "> ?y }";
 			LOG.info(queryString);
 			query = QueryFactory.create(queryString);
 			qe = QueryExecutionFactory.create(query, model);
@@ -191,10 +222,10 @@ public class Main {
 			String res = "";
 			while (results.hasNext()) {
 				QuerySolution qs = results.nextSolution();
-				res+= qs.toString().replace("http://spu.ica.sth.sh.cn#", "").replace("<", "").replace(">", "") +"\n";
+				res += qs.toString().replace("http://spu.ica.sth.sh.cn#", "").replace("<", "").replace(">", "") + "\n";
 			}
 			return res;
-		}else if (qt == SimpleQtype.TYPE_MIN) {
+		} else if (qt == SimpleQtype.TYPE_MIN) {
 			String queryString = " SELECT ?x ?y ?z where { ";
 			String[] target = new String[2];
 			int idx = 0;
@@ -216,7 +247,7 @@ public class Main {
 			String res = "";
 			while (results.hasNext()) {
 				QuerySolution qs = results.nextSolution();
-				res+= qs.toString().replace("http://spu.ica.sth.sh.cn#", "").replace("<", "").replace(">", "") +"\n";
+				res += qs.toString().replace("http://spu.ica.sth.sh.cn#", "").replace("<", "").replace(">", "") + "\n";
 			}
 			return res;
 		} else if (qt == SimpleQtype.TYPE_LIST) {
@@ -241,7 +272,7 @@ public class Main {
 			String res = "";
 			while (results.hasNext()) {
 				QuerySolution qs = results.nextSolution();
-				res+= qs.toString().replace("http://spu.ica.sth.sh.cn#", "").replace("<", "").replace(">", "") +"\n";
+				res += qs.toString().replace("http://spu.ica.sth.sh.cn#", "").replace("<", "").replace(">", "") + "\n";
 			}
 			return res;
 		}
