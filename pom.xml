@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>jena-core</artifactId>
-			<version>3.0.1</version>
+			<version>4.2.0</version>
 		</dependency>
 		
 		<!-- apache默默調用了com.hp...exception的一個類，一般情況不出現問題，用了也不寫到pom裏面，哼！ -->
